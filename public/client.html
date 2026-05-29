@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Личный кабинет Клиента</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button id="logout-btn" style="float: right" onclick="logout()">
+        Выйти
+      </button>
+      <h1>Личный кабинет</h1>
+
+      <div
+        style="
+          border-bottom: 2px solid #eee;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <h2>Выберите дату приема</h2>
+        <div class="form-group">
+          <input
+            type="date"
+            id="client-calendar"
+            onchange="handleDateChange()"
+          />
+        </div>
+        <h3
+          id="slots-title"
+          style="display: none; text-align: center; margin-top: 20px"
+        >
+          Доступное время:
+        </h3>
+        <div id="slots-list">
+          Выберите дату выше, чтобы увидеть свободное время.
+        </div>
+      </div>
+
+      <div>
+        <h2 style="color: #28a745">Мои активные записи</h2>
+        <div id="my-appointments-list">Загрузка ваших записей...</div>
+      </div>
+    </div>
+    <!-- МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ ЗАПИСИ КЛИЕНТА -->
+    <div id="booking-modal" class="modal-overlay" style="display: none">
+      <div class="modal-content" style="text-align: center">
+        <h2 style="color: #4f46e5; margin-bottom: 15px">
+          Подтверждение записи
+        </h2>
+        <p style="font-size: 16px; margin-bottom: 20px; line-height: 1.5">
+          Вы собираетесь записаться на прием:<br />
+          <span
+            id="modal-booking-info"
+            style="font-weight: bold; color: #1a1a1a; font-size: 18px"
+          ></span>
+        </p>
+        <button
+          class="submit-btn"
+          id="confirm-booking-btn"
+          style="background: #28a745; margin-bottom: 10px"
+        >
+          ✅ Да, записаться
+        </button>
+        <button
+          class="close-modal-btn"
+          style="margin-top: 0"
+          onclick="closeClientModal()"
+        >
+          ❌ Отмена
+        </button>
+      </div>
+    </div>
+
+    <script src="client.js"></script>
+  </body>
+</html>

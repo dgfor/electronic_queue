@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Экран Оператора</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button id="logout-btn" style="float: right" onclick="logout()">
+        Выйти
+      </button>
+      <h1>Панель Оператора</h1>
+
+      <div
+        style="
+          border-bottom: 2px solid #eee;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <h2>Открыть время для записи</h2>
+        <div class="form-group">
+          <label>Дата:</label>
+          <input type="date" id="op-date" />
+        </div>
+        <div class="form-group">
+          <label>Время:</label>
+          <input type="time" id="op-time" />
+        </div>
+        <button class="submit-btn" onclick="createSlot()">Добавить слот</button>
+      </div>
+
+      <div
+        style="
+          border-bottom: 2px solid #eee;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <h2 style="color: #007bff">Журнал записи клиентов</h2>
+        <div id="operator-queue-list">Загрузка списка клиентов...</div>
+      </div>
+
+      <div>
+        <h3 style="color: #6c757d">Созданное мной время для записи</h3>
+        <div id="operator-my-slots-list">Загрузка вашего графика...</div>
+      </div>
+    </div>
+    <script src="operator.js"></script>
+  </body>
+</html>

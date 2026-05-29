@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Управление Операторами</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button
+        style="float: left; background: #6c757d"
+        class="book-btn"
+        onclick="window.location.href = '/admin.html'"
+      >
+        ← Назад
+      </button>
+      <div style="clear: both; margin-bottom: 20px"></div>
+
+      <h1 style="color: #007bff">Реестр Операторов</h1>
+      <div id="admin-operators-list">Загрузка списка операторов...</div>
+    </div>
+    <script>
+      // Простая изолированная логика для этой страницы
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser || currentUser.role !== "admin")
+        window.location.href = "/index.html";
+
+      async function loadOperators() {
+        const res = await fetch("/api/admin-users");
+        const users = await res.json();
+        const listDiv = document.getElementById("admin-operators-list");
+        listDiv.innerHTML = "";
+        let count = 0;
+
+        users.forEach((user) => {
+          if (user.role === "operator") {
+            count++;
+            listDiv.innerHTML += `
+          <div class="slot-card" style="border-left: 5px solid #007bff;">
+            <div>Логин: <strong>${user.username}</strong></div>
+            <button class="book-btn" style="background: #dc3545;" onclick="deleteUser(${user.id})">Удалить</button>
+          </div>
+        `;
+          }
+        });
+        if (count === 0) listDiv.innerHTML = "<p>Операторы не найдены.</p>";
+      }
+
+      async function deleteUser(userId) {
+        if (!confirm("Удалить этого оператора и все его смены?")) return;
+        await fetch(`/api/admin-users/${userId}`, { method: "DELETE" });
+        loadOperators();
+      }
+
+      loadOperators();
+    </script>
+  </body>
+</html>

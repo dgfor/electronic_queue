@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Панель Администратора</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button id="logout-btn" style="float: right" onclick="logout()">
+        Выйти
+      </button>
+      <h1>Панель Администратора</h1>
+
+      <div
+        style="
+          border-bottom: 2px solid #eee;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <h3>Создать нового пользователя</h3>
+        <div class="form-group">
+          <label>Логин:</label>
+          <input type="text" id="adm-user" placeholder="Например, operator3" />
+        </div>
+        <div class="form-group">
+          <label>Пароль:</label>
+          <input type="password" id="adm-pass" />
+        </div>
+        <div class="form-group">
+          <label>Роль:</label>
+          <select id="adm-role">
+            <option value="operator">Оператор</option>
+            <option value="client">Клиент</option>
+          </select>
+        </div>
+        <button class="submit-btn" onclick="createUser()">
+          Создать пользователя
+        </button>
+      </div>
+
+      <!-- Блок навигации на отдельные страницы реестров -->
+      <div
+        style="
+          border-bottom: 2px solid #eee;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+          margin-top: 20px;
+        "
+      >
+        <h3 style="color: #4f46e5; margin-bottom: 12px">
+          Управление пользователями
+        </h3>
+        <div style="display: flex; gap: 10px">
+          <!-- Кнопки теперь просто переводят браузер на новые адреса страниц -->
+          <button
+            style="
+              flex: 1;
+              padding: 12px;
+              border: 2px solid #edf2f7;
+              border-radius: 14px;
+              background: #f8fafc;
+              cursor: pointer;
+              font-weight: 600;
+            "
+            onclick="window.location.href = '/admin-operators.html'"
+          >
+            📋 Открыть Реестр Операторов
+          </button>
+          <button
+            style="
+              flex: 1;
+              padding: 12px;
+              border: 2px solid #edf2f7;
+              border-radius: 14px;
+              background: #f8fafc;
+              cursor: pointer;
+              font-weight: 600;
+            "
+            onclick="window.location.href = '/admin-clients.html'"
+          >
+            👥 Открыть Реестр Клиентов
+          </button>
+        </div>
+      </div>
+
+      <!-- <div
+        style="
+          border-bottom: 2px solid #eee;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+        "
+      >
+        <h3 style="color: #4f46e5; margin-bottom: 12px">
+          Управление пользователями
+        </h3>
+        <div style="display: flex; gap: 10px; margin-bottom: 15px">
+          <button
+            id="tab-ops-btn"
+            style="
+              flex: 1;
+              padding: 8px;
+              border: 2px solid #edf2f7;
+              border-radius: 10px;
+              background: #f8fafc;
+              cursor: pointer;
+              font-weight: 600;
+            "
+            onclick="toggleAdminUserView('operator')"
+          >
+            Операторы
+          </button>
+          <button
+            id="tab-cls-btn"
+            style="
+              flex: 1;
+              padding: 8px;
+              border: 2px solid #edf2f7;
+              border-radius: 10px;
+              background: #f8fafc;
+              cursor: pointer;
+              font-weight: 600;
+            "
+            onclick="toggleAdminUserView('client')"
+          >
+            Клиенты
+          </button>
+        </div>
+        <div id="admin-operators-list" style="display: none">
+          Загрузка списка операторов...
+        </div>
+        <div id="admin-clients-list" style="display: none">
+          Загрузка списка клиентов...
+        </div>
+      </div> -->
+
+      <!-- <div>
+        <h2 style="color: #dc3545">Глобальный журнал всех записей</h2>
+        <div id="admin-all-appointments">Загрузка общегольного журнала...</div>
+      </div> -->
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

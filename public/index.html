@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вход в систему</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Система Записи</h1>
+      <div id="screen-login">
+        <h2>Вход в систему</h2>
+        <div class="form-group">
+          <label>Логин:</label>
+          <input type="text" id="login-user" placeholder="Введите ваш логин" />
+        </div>
+        <div class="form-group">
+          <label>Пароль:</label>
+          <input type="password" id="login-pass" placeholder="Введите пароль" />
+        </div>
+        <button class="submit-btn" onclick="handleLogin()">Войти</button>
+      </div>
+    </div>
+    <script src="login.js"></script>
+  </body>
+</html>

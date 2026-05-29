@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Управление Клиентами</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button
+        style="float: left; background: #6c757d"
+        class="book-btn"
+        onclick="window.location.href = '/admin.html'"
+      >
+        ← Назад
+      </button>
+      <div style="clear: both; margin-bottom: 20px"></div>
+
+      <h1 style="color: #28a745">Реестр Клиентов</h1>
+      <div id="admin-clients-list">Загрузка списка клиентов...</div>
+    </div>
+    <script>
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (!currentUser || currentUser.role !== "admin")
+        window.location.href = "/index.html";
+
+      async function loadClients() {
+        const res = await fetch("/api/admin-users");
+        const users = await res.json();
+        const listDiv = document.getElementById("admin-clients-list");
+        listDiv.innerHTML = "";
+        let count = 0;
+
+        users.forEach((user) => {
+          if (user.role === "client") {
+            count++;
+            listDiv.innerHTML += `
+          <div class="slot-card" style="border-left: 5px solid #28a745;">
+            <div>Логин: <strong>${user.username}</strong></div>
+            <button class="book-btn" style="background: #dc3545;" onclick="deleteUser(${user.id})">Удалить</button>
+          </div>
+        `;
+          }
+        });
+        if (count === 0) listDiv.innerHTML = "<p>Клиенты не найдены.</p>";
+      }
+
+      async function deleteUser(userId) {
+        if (!confirm("Удалить этого клиента и его активные записи?")) return;
+        await fetch(`/api/admin-users/${userId}`, { method: "DELETE" });
+        loadClients();
+      }
+
+      loadClients();
+    </script>
+  </body>
+</html>
