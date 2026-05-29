@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Экран Оператора</title>
+    <script src="notifications.js"></script>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -20,7 +21,7 @@
           margin-bottom: 20px;
         "
       >
-        <h2>Открыть время для записи</h2>
+        <!-- <h2>Открыть время для записи</h2>
         <div class="form-group">
           <label>Дата:</label>
           <input type="date" id="op-date" />
@@ -29,7 +30,95 @@
           <label>Время:</label>
           <input type="time" id="op-time" />
         </div>
-        <button class="submit-btn" onclick="createSlot()">Добавить слот</button>
+        <button class="submit-btn" onclick="createSlot()">Добавить слот</button> -->
+
+        <div
+          style="
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+          "
+        >
+          <h2>Управление расписанием</h2>
+
+          <!-- Переключатель режимов -->
+          <div style="display: flex; gap: 10px; margin-bottom: 15px">
+            <button
+              style="
+                flex: 1;
+                padding: 6px;
+                font-size: 13px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                cursor: pointer;
+              "
+              onclick="setOrderMode('single')"
+            >
+              Один слот
+            </button>
+            <button
+              style="
+                flex: 1;
+                padding: 6px;
+                font-size: 13px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                cursor: pointer;
+              "
+              onclick="setOrderMode('batch')"
+            >
+              Генератор дня
+            </button>
+          </div>
+
+          <div class="form-group">
+            <label>Дата:</label>
+            <input type="date" id="op-date" />
+          </div>
+
+          <!-- ФОРМА 1: Одиночный слот -->
+          <div id="form-single">
+            <div class="form-group">
+              <label>Время:</label>
+              <input type="time" id="op-time" />
+            </div>
+            <button class="submit-btn" onclick="createSlot()">
+              Добавить один слот
+            </button>
+          </div>
+
+          <!-- ФОРМА 2: Генератор (скрыта по умолчанию) -->
+          <div id="form-batch" style="display: none">
+            <div style="display: flex; gap: 10px">
+              <div class="form-group" style="flex: 1">
+                <label>С (Начало):</label>
+                <input type="time" id="op-start" value="09:00" />
+              </div>
+              <div class="form-group" style="flex: 1">
+                <label>До (Конец):</label>
+                <input type="time" id="op-end" value="18:00" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Шаг времени (интервал):</label>
+              <select id="op-interval">
+                <option value="20">20 минут</option>
+                <option value="30" selected>30 минут</option>
+                <option value="45">45 минут</option>
+                <option value="60">1 час</option>
+              </select>
+            </div>
+            <button
+              class="submit-btn"
+              style="
+                background: linear-gradient(135deg, #4f46e5 0%, #764ba2 100%);
+              "
+              onclick="generateWorkDay()"
+            >
+              Сгенерировать рабочий день
+            </button>
+          </div>
+        </div>
       </div>
 
       <div
@@ -48,6 +137,6 @@
         <div id="operator-my-slots-list">Загрузка вашего графика...</div>
       </div>
     </div>
-    <script src="operator.js"></script>
+    <script src="operator.js?v=2"></script>
   </body>
 </html>

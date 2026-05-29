@@ -23,6 +23,8 @@ db.exec(`
     slot_time TEXT NOT NULL,       -- Время в формате ЧЧ:ММ
     is_booked INTEGER DEFAULT 0,    -- 0 - свободно, 1 - занято клиентом
     FOREIGN KEY(operator_id) REFERENCES users(id) ON DELETE CASCADE
+		-- ПРАВИЛО: Один оператор не может иметь два одинаковых времени в один день
+    UNIQUE(operator_id, slot_date, slot_time) 
   );
 
   -- 3. Таблица записей клиентов на прием

@@ -79,3 +79,49 @@ function logout() {
 
 loadOperatorQueue();
 loadOperatorSlots();
+
+// Переключение видимости форм создания
+function setOrderMode(mode) {
+  if (mode === "single") {
+    document.getElementById("form-single").style.display = "block";
+    document.getElementById("form-batch").style.display = "none";
+  } else {
+    document.getElementById("form-single").style.display = "none";
+    document.getElementById("form-batch").style.display = "block";
+  }
+}
+
+// Функция пакетной генерации дня
+async function generateWorkDay() {
+  const slot_date = document.getElementById("op-date").value;
+  const start_time = document.getElementById("op-start").value;
+  const end_time = document.getElementById("op-end").value;
+  const interval_minutes = document.getElementById("op-interval").value;
+
+  if (!slot_date || !start_time || !end_time) {
+    showToast("Пожалуйста, заполните все параметры генерации!", "error");
+    return;
+  }
+
+  const res = await fetch("/api/slots/generate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      operator_id: currentUser.id,
+      slot_date,
+      start_time,
+      end_time,
+      interval_minutes,
+    }),
+  });
+
+  const data = await res.json();
+
+  if (data.error) {
+    showToast(data.error, "error");
+  } else {
+    showToast(data.message, "success");
+  }
+
+  loadOperatorSlots(); // Мгновенно обновляем сетку внизу у оператора
+}

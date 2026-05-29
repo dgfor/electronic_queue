@@ -75,6 +75,30 @@
       </div>
     </div>
 
-    <script src="client.js?v=2"></script>
+    <!-- МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ ОТМЕНЫ -->
+    <div id="cancel-modal" class="modal-overlay" style="display: none">
+      <div class="modal-content" style="text-align: center">
+        <h2 style="color: #dc3545; margin-bottom: 15px">Отмена записи</h2>
+        <p style="font-size: 16px; margin-bottom: 20px; line-height: 1.5">
+          Вы действительно хотите отменить запись на это время?
+        </p>
+        <button
+          class="submit-btn"
+          id="confirm-cancel-btn"
+          style="background: #dc3545; margin-bottom: 10px"
+        >
+          ❌ Да, отменить
+        </button>
+        <button
+          class="close-modal-btn"
+          style="margin-top: 0"
+          onclick="closeCancelModal()"
+        >
+          Назад
+        </button>
+      </div>
+    </div>
+
+    <script src="client.js?v=3"></script>
   </body>
 </html>

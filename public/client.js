@@ -162,8 +162,45 @@ async function loadMyAppointments() {
 }
 
 // Отмена записи Клиентом
-async function cancelAppointment(appointmentId) {
-  if (!confirm("Вы уверены, что хотите отменить эту запись?")) return;
+// async function cancelAppointment(appointmentId) {
+//   if (!confirm("Вы уверены, что хотите отменить эту запись?")) return;
+
+//   const res = await fetch(`/api/appointments/${appointmentId}`, {
+//     method: "DELETE",
+//   });
+//   const data = await res.json();
+
+//   if (data.error) {
+//     showToast(data.error, "error");
+//   } else {
+//     showToast(data.message || "Запись отменена!", "success");
+//   }
+
+//   // Мгновенно обновляем интерфейс кабинета
+//   loadSlots();
+//   loadMyAppointments();
+// }
+
+let appointmentIdForCancel = null;
+
+// Вместо удаления сразу — открываем красивое окно
+function cancelAppointment(appointmentId) {
+  appointmentIdForCancel = appointmentId;
+  document.getElementById("cancel-modal").style.display = "flex";
+
+  document.getElementById("confirm-cancel-btn").onclick = function () {
+    executeCancel(appointmentId);
+  };
+}
+
+function closeCancelModal() {
+  document.getElementById("cancel-modal").style.display = "none";
+  appointmentIdForCancel = null;
+}
+
+// Физическое удаление записи
+async function executeCancel(appointmentId) {
+  closeCancelModal(); // Закрываем окно мгновенно
 
   const res = await fetch(`/api/appointments/${appointmentId}`, {
     method: "DELETE",
@@ -176,7 +213,6 @@ async function cancelAppointment(appointmentId) {
     showToast(data.message || "Запись отменена!", "success");
   }
 
-  // Мгновенно обновляем интерфейс кабинета
   loadSlots();
   loadMyAppointments();
 }

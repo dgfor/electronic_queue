@@ -40,14 +40,80 @@ app.post("/api/users", (req, res) => {
 });
 
 // === ОПЕРАТОР: СОЗДАТЬ СЛОТ ===
-app.post("/api/slots", (req, res) => {
-  const { operator_id, slot_date, slot_time } = req.body;
+// app.post("/api/slots", (req, res) => {
+//   const { operator_id, slot_date, slot_time } = req.body;
+//   try {
+//     const stmt = db.prepare(
+//       "INSERT INTO time_slots (operator_id, slot_date, slot_time) VALUES (?, ?, ?)",
+//     );
+//     const info = stmt.run(operator_id, slot_date, slot_time);
+//     res.status(201).json({ message: "Тайм-слот успешно открыт для записи!" });
+//   } catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// });
+
+// === ОПЕРАТОР: ГЕНЕРАЦИЯ СЕТКИ РАБОЧЕГО ДНЯ С ЗАЩИТОЙ ОТ ДУБЛИКАТОВ ===
+app.post("/api/slots/generate", (req, res) => {
+  const { operator_id, slot_date, start_time, end_time, interval_minutes } =
+    req.body;
+
   try {
-    const stmt = db.prepare(
-      "INSERT INTO time_slots (operator_id, slot_date, slot_time) VALUES (?, ?, ?)",
-    );
-    const info = stmt.run(operator_id, slot_date, slot_time);
-    res.status(201).json({ message: "Тайм-слот успешно открыт для записи!" });
+    const transaction = db.transaction(() => {
+      const stmt = db.prepare(
+        "INSERT INTO time_slots (operator_id, slot_date, slot_time) VALUES (?, ?, ?)",
+      );
+
+      let [currentH, currentM] = start_time.split(":").map(Number);
+      const [endH, endM] = end_time.split(":").map(Number);
+
+      const startTotal = currentH * 60 + currentM;
+      const endTotal = endH * 60 + endM;
+      let runningTotal = startTotal;
+
+      let createdCount = 0;
+      let skippedCount = 0; // Считаем, сколько дубликатов мы пропустили
+
+      while (runningTotal <= endTotal) {
+        const h = String(Math.floor(runningTotal / 60)).padStart(2, "0");
+        const m = String(runningTotal % 60).padStart(2, "0");
+        const timeStr = `${h}:${m}`;
+
+        // УМНАЯ ПРОВЕРКА: Ищем, существует ли уже ТОЧНО ТАКОЙ ЖЕ слот в базе
+        const existingSlot = db
+          .prepare(
+            `
+          SELECT id FROM time_slots 
+          WHERE operator_id = ? AND slot_date = ? AND slot_time = ?
+        `,
+          )
+          .get(operator_id, slot_date, timeStr);
+
+        if (!existingSlot) {
+          // Если слота нет — создаем его
+          stmt.run(operator_id, slot_date, timeStr);
+          createdCount++;
+        } else {
+          // Если слот уже был создан вручную ранее — пропускаем
+          skippedCount++;
+        }
+
+        runningTotal += Number(interval_minutes);
+      }
+
+      // Возвращаем оба значения из транзакции
+      return { createdCount, skippedCount };
+    });
+
+    const result = transaction();
+
+    // Формируем понятный ответ для оператора
+    let responseMessage = `Успешно сгенерировано слотов: ${result.createdCount}.`;
+    if (result.skippedCount > 0) {
+      responseMessage += ` Пропущено дубликатов: ${result.skippedCount}.`;
+    }
+
+    res.status(201).json({ message: responseMessage });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -204,6 +270,57 @@ app.delete("/api/admin-users/:id", (req, res) => {
     // автоматически удалятся все его тайм-слоты и записи на прием!
     db.prepare("DELETE FROM users WHERE id = ?").run(userId);
     res.json({ message: "Пользователь успешно удален из системы!" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// === ОПЕРАТОР: ГЕНЕРАЦИЯ СЕТКИ РАБОЧЕГО ДНЯ ===
+app.post("/api/slots/generate", (req, res) => {
+  const { operator_id, slot_date, start_time, end_time, interval_minutes } =
+    req.body;
+
+  try {
+    // Используем транзакцию, чтобы все слоты создались пачкой безопасно
+    const transaction = db.transaction(() => {
+      const stmt = db.prepare(
+        "INSERT INTO time_slots (operator_id, slot_date, slot_time) VALUES (?, ?, ?)",
+      );
+
+      // Переводим часы и минуты в удобный для расчета формат
+      let [currentH, currentM] = start_time.split(":").map(Number);
+      const [endH, endM] = end_time.split(":").map(Number);
+
+      const startTotal = currentH * 60 + currentM;
+      const endTotal = endH * 60 + endM;
+      let runningTotal = startTotal;
+
+      let createdCount = 0;
+
+      while (runningTotal <= endTotal) {
+        const h = String(Math.floor(runningTotal / 60)).padStart(2, "0");
+        const m = String(runningTotal % 60).padStart(2, "0");
+        const timeStr = `${h}:${m}`;
+
+        // Проверяем, нет ли уже такого слота у этого оператора на это время
+        const exist = db
+          .prepare(
+            "SELECT id FROM time_slots WHERE operator_id = ? AND slot_date = ? AND slot_time = ?",
+          )
+          .get(operator_id, slot_date, timeStr);
+
+        if (!exist) {
+          stmt.run(operator_id, slot_date, timeStr);
+          createdCount++;
+        }
+
+        runningTotal += Number(interval_minutes); // Шаг вперед (например, +30 минут)
+      }
+      return createdCount;
+    });
+
+    const count = transaction();
+    res.status(201).json({ message: `Успешно сгенерировано слотов: ${count}` });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
