@@ -118,17 +118,26 @@ function closeClientModal() {
 
 // Физическое бронирование после нажатия кнопки "Да, записаться" в окне
 async function executeBooking(slotId) {
+  // 1. МГНОВЕННО закрываем модальное окно, чтобы не заставлять пользователя ждать
+  closeClientModal();
+
   const res = await fetch("/api/appointments", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ client_id: currentUser.id, slot_id: slotId }),
   });
   const data = await res.json();
-  alert(data.message || data.error);
 
-  closeClientModal(); // Закрываем окно
-  loadSlots(); // Обновляем календари
-  loadMyAppointments();
+  // 2. Выводим наше красивое анимированное уведомление
+  if (data.error) {
+    showToast(data.error, "error");
+  } else {
+    showToast(data.message || "Вы успешно записались на прием!", "success");
+  }
+
+  // 3. СРАЗУ ЖЕ перезагружаем оба списка на экране клиента
+  loadSlots(); // Слот исчезнет из доступного времени
+  loadMyAppointments(); // Слот ТУТ ЖЕ появится внизу в блоке "Мои активные записи" с кнопкой отмены!
 }
 
 async function loadMyAppointments() {
@@ -152,13 +161,22 @@ async function loadMyAppointments() {
   });
 }
 
+// Отмена записи Клиентом
 async function cancelAppointment(appointmentId) {
-  if (!confirm("Отменить эту запись?")) return;
+  if (!confirm("Вы уверены, что хотите отменить эту запись?")) return;
+
   const res = await fetch(`/api/appointments/${appointmentId}`, {
     method: "DELETE",
   });
   const data = await res.json();
-  alert(data.message || data.error);
+
+  if (data.error) {
+    showToast(data.error, "error");
+  } else {
+    showToast(data.message || "Запись отменена!", "success");
+  }
+
+  // Мгновенно обновляем интерфейс кабинета
   loadSlots();
   loadMyAppointments();
 }

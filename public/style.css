@@ -165,3 +165,50 @@ body.login-page {
 .login-submit-btn:hover .btn-arrow {
   transform: translateX(4px);
 }
+
+/* Контейнер для уведомлений (всегда зафиксирован поверх всего) */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Сама плашка уведомления */
+.toast-item {
+  min-width: 280px;
+  max-width: 350px;
+  background: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d3748;
+  border-left: 6px solid #ccc;
+  
+  /* Эффектная анимация вылета справа налево */
+  animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transition: all 0.3s ease;
+}
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.toast-item.fade-out {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* Стилизация типов уведомлений */
+.toast-item.success { border-left-color: #28a745; background-color: #f4fbf6; }
+.toast-item.error { border-left-color: #dc3545; background-color: #fff5f5; }
+.toast-item.info { border-left-color: #007bff; background-color: #f0f7ff; }

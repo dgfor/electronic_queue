@@ -15,9 +15,9 @@
         <p>Система онлайн-записи и электронных очередей</p>
       </div>
 
+      <!-- БЛОК ВХОДА -->
       <div id="screen-login">
         <h2>Авторизация</h2>
-
         <div class="form-group-custom">
           <div class="input-wrapper">
             <span class="input-icon">👤</span>
@@ -30,7 +30,6 @@
             />
           </div>
         </div>
-
         <div class="form-group-custom">
           <div class="input-wrapper">
             <span class="input-icon">🔒</span>
@@ -43,14 +42,84 @@
             />
           </div>
         </div>
-
         <button class="login-submit-btn" onclick="handleLogin()">
           <span>Войти в систему</span>
           <span class="btn-arrow">→</span>
         </button>
+        <p
+          style="
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+          "
+        >
+          Впервые у нас?
+          <a
+            href="#"
+            onclick="toggleAuthForms('register')"
+            style="color: #4f46e5; font-weight: 600; text-decoration: none"
+            >Создать аккаунт</a
+          >
+        </p>
+      </div>
+
+      <!-- БЛОК РЕГИСТРАЦИИ (по умолчанию скрыт) -->
+      <div id="screen-register" style="display: none">
+        <h2>Регистрация</h2>
+        <div class="form-group-custom">
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="reg-user"
+              placeholder="Придумайте логин"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group-custom">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="reg-pass"
+              placeholder="Придумайте пароль"
+              required
+            />
+          </div>
+        </div>
+        <button
+          class="login-submit-btn"
+          style="
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            box-shadow: 0 4px 14px rgba(40, 167, 69, 0.3);
+          "
+          onclick="handleRegister()"
+        >
+          <span>Зарегистрироваться</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <p
+          style="
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+          "
+        >
+          Уже есть аккаунт?
+          <a
+            href="#"
+            onclick="toggleAuthForms('login')"
+            style="color: #4f46e5; font-weight: 600; text-decoration: none"
+            >Войти</a
+          >
+        </p>
       </div>
     </div>
-
+	 
+	 <script src="notifications.js"></script>
     <script src="login.js"></script>
   </body>
 </html>
