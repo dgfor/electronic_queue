@@ -3,25 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Вход в систему</title>
+    <title>Вход в систему | Электронная Очередь</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <div class="container">
-      <h1>Система Записи</h1>
+  <body class="login-page">
+    <div class="login-card">
+      <!-- Иконка или логотип (сделаем текстовый стильный логотип) -->
+      <div class="login-logo">
+        <span class="logo-icon">🕒</span>
+        <h1>SmartQueue</h1>
+        <p>Система онлайн-записи и электронных очередей</p>
+      </div>
+
       <div id="screen-login">
-        <h2>Вход в систему</h2>
-        <div class="form-group">
-          <label>Логин:</label>
-          <input type="text" id="login-user" placeholder="Введите ваш логин" />
+        <h2>Авторизация</h2>
+
+        <div class="form-group-custom">
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="login-user"
+              placeholder="Ваш логин"
+              required
+              autocomplete="username"
+            />
+          </div>
         </div>
-        <div class="form-group">
-          <label>Пароль:</label>
-          <input type="password" id="login-pass" placeholder="Введите пароль" />
+
+        <div class="form-group-custom">
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="login-pass"
+              placeholder="Ваш пароль"
+              required
+              autocomplete="current-password"
+            />
+          </div>
         </div>
-        <button class="submit-btn" onclick="handleLogin()">Войти</button>
+
+        <button class="login-submit-btn" onclick="handleLogin()">
+          <span>Войти в систему</span>
+          <span class="btn-arrow">→</span>
+        </button>
       </div>
     </div>
+
     <script src="login.js"></script>
   </body>
 </html>

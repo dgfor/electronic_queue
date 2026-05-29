@@ -24,3 +24,144 @@ h1, h2 { text-align: center; }
 button.submit-btn { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
 .slot-card { display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #eee; margin-bottom: 10px; border-radius: 4px; background: #fafafa; }
 .book-btn { padding: 6px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+
+/* Специальный фон для страницы входа */
+body.login-page {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 15px;
+}
+
+/* Современная карточка авторизации */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px 30px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: loginFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes loginFadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Стили логотипа */
+.login-logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  font-size: 40px;
+  display: inline-block;
+  margin-bottom: 10px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.login-logo h1 {
+  font-size: 26px;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.login-logo p {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.login-card h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Кастомные поля ввода с иконками внутри */
+.form-group-custom {
+  margin-bottom: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 16px;
+  color: #a0aec0;
+  pointer-events: none;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 14px 16px 14px 45px; /* Отступ слева побольше, чтобы текст не налезал на иконку */
+  font-size: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  background-color: #f7fafc;
+  color: #2d3748;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.input-wrapper input:focus {
+  border-color: #4f46e5;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+/* Мощная кнопка входа */
+.login-submit-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+  transition: all 0.25s ease;
+}
+
+.login-submit-btn:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.login-submit-btn:active {
+  transform: translateY(1px);
+}
+
+.btn-arrow {
+  transition: transform 0.2s ease;
+}
+
+.login-submit-btn:hover .btn-arrow {
+  transform: translateX(4px);
+}
