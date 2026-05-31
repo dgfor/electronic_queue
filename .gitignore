@@ -1,2 +1,17 @@
 node_modules/
 queue.db
+
+# Настройки VS Code
+.vscode/
+
+# Временные файлы XAMPP и логи
+*.log
+error_log
+.htaccess
+
+# Игнорируем все фаилы txt
+*.txt
+
+# ОС файлы
+Thumbs.db
+.DS_Store
